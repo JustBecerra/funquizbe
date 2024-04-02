@@ -28,7 +28,7 @@ type Questions struct {
 } 
 
 func getQuestions(c *gin.Context){
-	resp, err := http.Get("https://the-trivia-api.com/v2/questions")
+	resp, err := http.Get("https://the-trivia-api.com/v2/questions?limit=50")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch questions"})
 		return
