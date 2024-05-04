@@ -6,6 +6,11 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
+
+	"funquizbe/db"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -57,6 +62,24 @@ func getQuestions(c *gin.Context){
 }
 
 func InitRouter() *gin.Engine {
+	err := godotenv.Load()
+    if err != nil {
+        fmt.Println("Error loading .env file")
+    }
+
+	db, err := db.ConnectDB()
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer db.Close()
+
+    // Ping the database to test the connection
+    err = db.Ping()
+    if err != nil {
+        panic(err)
+    }
+
+    fmt.Println("Successfully connected to PostgreSQL database!")
 	router := gin.Default()
 
 	router.Use(cors.Default())
