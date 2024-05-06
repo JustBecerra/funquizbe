@@ -1,7 +1,7 @@
 package main
 
 import (
-	"funquizbe/router"
+	router "funquizbe/routes"
 )
 
 func main(){
