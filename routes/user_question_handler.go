@@ -3,7 +3,6 @@ package router
 import (
 	"funquizbe/db"
 	"funquizbe/models"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,34 +12,35 @@ import (
 
 func postQuestion(c *gin.Context) {
 	var newQuestion models.UserQuestion
-	if err := c.BindJSON(&newQuestion); err != nil {
+    if err := c.ShouldBindJSON(&newQuestion); err != nil {
         c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON data"})
         return
     }
 
-	db := db.GetDB()
+    db, err := db.ConnectDB()
+	if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Database connection error"})
+        return
+    }
 
-	sqlStatement := `
+    sqlStatement := `
     INSERT INTO questions (question, correctanswer, incorrectanswers)
     VALUES ($1, $2, $3)
     RETURNING id`
-	// var questionID int
 
-	// err := db.Prepare(sqlStatement, newQuestion.Question, newQuestion.CorrectAnswer, pq.Array(newQuestion.IncorrectAnswers)).Scan(&questionID)
-	// if err != nil {
-	// 	c.JSON(http.StatusInternalServerError, gin.H{"error": "Database insertion error"})
-	// 	return
-	// }
-	stmt, err := db.Prepare(sqlStatement)
-	if err != nil {
-		log.Fatal(err)
-	}
-	
-	if _, err := stmt.Exec(newQuestion.Question, newQuestion.CorrectAnswer, pq.Array(newQuestion.IncorrectAnswers)); err != nil {
-		log.Fatal(err)
-	}
-	defer stmt.Close()
-	c.JSON(http.StatusCreated, newQuestion)
+    stmt, err := db.Prepare(sqlStatement)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Database preparation error"})
+        return
+    }
+    defer stmt.Close()
 
-	// c.JSON(http.StatusOK, gin.H{"message": "Question posted successfully"})
+    _, err = stmt.Exec(newQuestion.Question, newQuestion.CorrectAnswer, pq.Array(newQuestion.IncorrectAnswers))
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Database insertion error"})
+        return
+    }
+	defer db.Close()
+
+    c.JSON(http.StatusCreated, newQuestion)
 }

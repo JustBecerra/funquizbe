@@ -25,13 +25,12 @@ func InitRouter() *gin.Engine {
 		fmt.Println(err)
 	}
 
-    // Ping the database to test the connection
     err = db.Ping()
     if err != nil {
         panic(err)
     }
 	defer db.Close()
-    fmt.Println("Successfully connected to PostgreSQL database!")
+
 	router := gin.Default()
 
 	router.Use(cors.Default())
