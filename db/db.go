@@ -23,3 +23,7 @@ func ConnectDB() (*sql.DB, error) {
 
 	return db, nil
 }
+
+func GetDB() *sql.DB{
+	return &sql.DB{}
+}
