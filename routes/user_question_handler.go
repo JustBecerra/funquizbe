@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/lib/pq"
 )
 
 
@@ -24,8 +23,8 @@ func postQuestion(c *gin.Context) {
     }
 
     sqlStatement := `
-    INSERT INTO questions (question, correctanswer, incorrectanswers)
-    VALUES ($1, $2, $3)
+    INSERT INTO questions (question, correctanswer, wronganswer1, wronganswer2, wronganswer3)
+    VALUES ($1, $2, $3, $4, $5)
     RETURNING id`
 
     stmt, err := db.Prepare(sqlStatement)
@@ -35,7 +34,7 @@ func postQuestion(c *gin.Context) {
     }
     defer stmt.Close()
 
-    _, err = stmt.Exec(newQuestion.Question, newQuestion.CorrectAnswer, pq.Array(newQuestion.IncorrectAnswers))
+    _, err = stmt.Exec(newQuestion.Question, newQuestion.CorrectAnswer, newQuestion.WrongAnswer1, newQuestion.WrongAnswer2, newQuestion.WrongAnswer3)
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Database insertion error"})
         return
