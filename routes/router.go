@@ -35,6 +35,7 @@ func InitRouter() *gin.Engine {
 
 	router.Use(cors.Default())
 	router.GET("/questions", getQuestions)
+	router.GET("/userquestions", getUserQuestions)
 	router.POST("/userquestion", postQuestion)
 	return router
 }
