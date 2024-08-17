@@ -37,5 +37,6 @@ func InitRouter() *gin.Engine {
 	router.GET("/questions", getQuestions)
 	router.GET("/userquestions", getUserQuestions)
 	router.POST("/userquestion", postQuestion)
+	router.DELETE("/deleteuserquestion", DeleteUserQuestions)
 	return router
 }
