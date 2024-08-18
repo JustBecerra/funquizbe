@@ -35,7 +35,7 @@ func getUserQuestions(c *gin.Context) {
     for rows.Next() {
         var userQuestion models.UserQuestion
         // Scan each row into a UserQuestion struct
-        err := rows.Scan(&userQuestion.ID, &userQuestion.Question, &userQuestion.CorrectAnswer, &userQuestion.WrongAnswer1, &userQuestion.WrongAnswer2 ,&userQuestion.WrongAnswer3)
+        err := rows.Scan(&userQuestion.ID, &userQuestion.Question, &userQuestion.CorrectAnswer, &userQuestion.IncorrectAnswers)
         if err != nil {
 			fmt.Println("Error scanning row:", err)
             c.JSON(http.StatusInternalServerError, gin.H{"error": "Error scanning rows"})
