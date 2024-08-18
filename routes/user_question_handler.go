@@ -34,7 +34,7 @@ func postQuestion(c *gin.Context) {
     }
     defer stmt.Close()
 
-    _, err = stmt.Exec(newQuestion.Question, newQuestion.CorrectAnswer, newQuestion.WrongAnswer1, newQuestion.WrongAnswer2, newQuestion.WrongAnswer3)
+    _, err = stmt.Exec(newQuestion.Question, newQuestion.CorrectAnswer, newQuestion.IncorrectAnswers)
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Database insertion error"})
         return
