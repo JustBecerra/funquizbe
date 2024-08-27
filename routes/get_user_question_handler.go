@@ -40,16 +40,20 @@ func getUserQuestions(c *gin.Context) {
 
 	// Prepare the SQL statement
 	sqlStatement := `
-		SELECT id, question, correctAnswer, incorrectAnswers
-		FROM questions`
+    SELECT id, question, "correctAnswer", "incorrectAnswers"
+    FROM questions`
+
 
 	// Execute the SQL statement
 	rows, err := db.Query(sqlStatement)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database query error"})
-		return
+    	c.JSON(http.StatusInternalServerError, gin.H{
+        	"error": "Database query error",
+        	"details": err.Error(), // This will show the exact error message
+    	})
+    	return
 	}
-	defer rows.Close()
+
 
 	// Iterate through the result set
 	for rows.Next() {
