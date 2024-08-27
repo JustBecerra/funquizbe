@@ -32,7 +32,7 @@ func postQuestion(c *gin.Context) {
     defer db.Close()
 
     sqlStatement := `
-    INSERT INTO questions (question, correctanswer, incorrectanswers)
+    INSERT INTO questions (question, correctAnswer, incorrectAnswers)
     VALUES ($1, $2, $3)
     RETURNING id`
 
