@@ -40,7 +40,7 @@ func getUserQuestions(c *gin.Context) {
 
 	// Prepare the SQL statement
 	sqlStatement := `
-		SELECT id, question, correctanswer, incorrectanswers
+		SELECT id, question, correctAnswer, incorrectAnswers
 		FROM questions`
 
 	// Execute the SQL statement
