@@ -7,8 +7,8 @@ import (
 )
 
 // Handler is the exported function Vercel will use as the entry point
-func main(){
+func main() {
 	gin.SetMode(gin.ReleaseMode)
 	r := router.InitRouter()
 	r.Run(":8080")
-   }
+}
