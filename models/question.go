@@ -12,7 +12,7 @@ type Question struct {
 	Regions          []string     `json:"regions"`
 	IsNiche          bool         `json:"isNiche"`
 	Question         QuestionText `json:"question"`
-	CorrectAnswer    string       `json:"correctAnswer"`
-	IncorrectAnswers []string     `json:"incorrectAnswers"`
+	CorrectAnswer    string       `json:"correctanswer"`
+	IncorrectAnswers []string     `json:"incorrectanswers"`
 	Type             string       `json:"type"`
 }
